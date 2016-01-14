@@ -27,7 +27,20 @@ export default class Note extends React.Component {
 	};
 
 	renderNote = () => {
-		return <div onClick={this.edit}> {this.props.task} </div>
+
+	    const onDelete = this.props.onDelete;
+
+	    return (
+	      <div onClick={this.edit}>
+	        <span>{this.props.task}</span>
+	        {onDelete ? this.renderDelete() : null }
+	      </div>
+	    );
+
+	};
+
+	 renderDelete = () => {
+	    return <button onClick={this.props.onDelete}>x</button>;
 	};
 
 	edit = () => {
@@ -44,7 +57,7 @@ export default class Note extends React.Component {
 
 	finishEdit = (keyPress) => {
 
-		if(this.props.onEdit) {
+		if(this.props.onEdit) {		//this onEdit refers to the onEdit = {onEdit.bind(null, note.id) defined in notes
 			this.props.onEdit(keyPress.target.value);	//this is a callback (ie delegate method)
 		}
 
