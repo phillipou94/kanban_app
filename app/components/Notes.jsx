@@ -7,7 +7,7 @@ export default ({notes, onEdit}) => {
 				<li key={note.id}> 
 					<Note 
 						task={note.task} 
-						onEdit = onEdit.bind(null, note.id)/> 
+						onEdit = {onEdit.bind(null, note.id)}/> 
 				</li>
 			)}</ul>
 	);

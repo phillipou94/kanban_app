@@ -45,7 +45,6 @@ export default class Note extends React.Component {
 	finishEdit = (keyPress) => {
 
 		if(this.props.onEdit) {
-			console.log("editting")
 			this.props.onEdit(keyPress.target.value);	//this is a callback (ie delegate method)
 		}
 
