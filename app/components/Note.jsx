@@ -1,4 +1,5 @@
 import React from 'react';
+import NoteStore from '../stores/NoteStore'
 
 //properties : task,
 

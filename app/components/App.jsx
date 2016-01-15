@@ -1,23 +1,24 @@
+
 import React from 'react';
 import uuid from 'node-uuid';
-import Notes from './Notes.jsx'
-import NoteActions from '../actions/NoteActions'
-import NoteStore from '../stores/NoteStore'
+import Lanes from './Lanes.jsx'
+import LaneActions from '../actions/LaneActions'
+import LaneStore from '../stores/LaneStore'
 
 
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = NoteStore.getState();
+		this.state = LaneStore.getState();
 	}
 
 	componentDidMount() {
-		NoteStore.listen(this.storeChanged);
+		LaneStore.listen(this.storeChanged);
 	}
 
 	componentWillUnmount() {
-		NoteStore.unlisten(this.storeChanged);
+		LaneStore.unlisten(this.storeChanged);
 	}
 
 	storeChanged = (state) => {
@@ -25,30 +26,16 @@ export default class App extends React.Component {
 	};
 
 	render() {
-		const notes = this.state.notes
-
     return (
     		<div>
-    			<button className = "add-note" onClick = {this.addNote}> Add </button>
-    			<Notes notes={notes} 
-    				onEdit={this.editNote}
-    				onDelete={this.deleteNote}/>
+    			<button className = "add-lane" onClick = {this.addLane}> Add </button>
+    			<Lanes lanes={LaneStore.getState().lanes}/>
     		</div>
     	);
   }
 
-	addNote = () => {
-		NoteActions.create({task: 'New task'});
+	addLane = () => {
+		LaneActions.create({name: 'New Lane'});
 	};
-
-
-  editNote = (id, task) => {
-  	NoteActions.update({id, task});
-
-  };
-
-  deleteNote = (id) => {
-  	NoteActions.deleteNote(id);
-  };
 
 }
