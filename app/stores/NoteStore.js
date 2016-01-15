@@ -8,6 +8,12 @@ class NoteStore {
 	constructor() {
 		this.bindActions(NoteActions);		//allow actions from NoteActions.js. bind to method name
 		this.notes = [];
+
+
+    this.exportPublicMethods({			//get was never declared in NoteActions
+      get: this.get.bind(this)			//make it public through exportPublicMethods
+    });
+
 	}
 
 	/*we have create, update, and delete actions */
@@ -19,6 +25,13 @@ class NoteStore {
 			notes: notes.concat(note)
 		});
 
+		return note;
+	}
+
+	get(ids) {
+		return (ids || []).map( 
+			(id) => this.notes.filter( (note) => note.id ===id)
+		).filter( (a) => a.length).map( (a) => a[0]);
 	}
 
 	update(updatedNote) {

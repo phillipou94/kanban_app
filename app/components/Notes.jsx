@@ -14,3 +14,4 @@ export default ({notes, onEdit, onDelete}) => {
 			)}</ul>
 	);
 }
+
