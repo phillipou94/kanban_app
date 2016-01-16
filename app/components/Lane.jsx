@@ -4,6 +4,7 @@ import Notes from './Notes.jsx';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
 import LaneActions from '../actions/LaneActions';
+import Editable from './Editable.jsx'
 
 //properties : task,
 
@@ -15,6 +16,9 @@ export default class Lane extends React.Component {
 		const laneId = props.lane.id;
 		this.addNote = this.addNote.bind(this,laneId);	//pass laneId to these methods
 		this.deleteNote = this.deleteNote.bind(this,laneId);
+
+		this.editName = this.editName.bind(this,laneId);
+		this.activateLaneEdit = this.activateLaneEdit.bind(this, laneId);
 	}
 
 	componentDidMount() {
@@ -40,17 +44,43 @@ export default class Lane extends React.Component {
 
 		return(
 			<div {...props}>
-				<div className="lane-header"></div>
-				<div className="lane-add-notes">
-					<button onClick = {this.addNote}> + </button>
-				</div>
-			<Notes notes={NoteStore.get(lane.notes)} 
+				<div className="lane-header">
+					<Editable className = "lane-name" 
+						editting={lane.editting}
+						value={lane.name} 
+						onEdit={this.editName}
+						onValueClick={this.activateLaneEdit}/>
+					<div className="lane-add-note">
+						<button onClick = {this.addNote}> + </button>
+					</div>	
+				</div>	
+
+						
+
+			<Notes 
+					notes={NoteStore.get(lane.notes)} 
+					onValueClick={this.activateNoteEdit}
   				onEdit={this.editNote}
   				onDelete={this.deleteNote}/>
   		</div>
 
 		);
 
+	}
+
+	editName(id, name) {
+		if(name) {
+			LaneActions.update({id,name,editting:false});
+		}
+	}
+
+	activateLaneEdit(id) {
+		LaneActions.update({id,name,editting:true});
+	}
+
+	//why doesn't this need to be binded in constructor???
+	activateNoteEdit(id) {
+		NoteActions.update({id,editting:true});
 	}
 
 	addNote(laneId) {
@@ -63,8 +93,7 @@ export default class Lane extends React.Component {
 	}
 
 	editNote = (id, task) => {
-  	NoteActions.update({id, task});
-
+  	NoteActions.update({id, task, editting: false});
   };
 
   deleteNote = (laneId, noteId) => {
